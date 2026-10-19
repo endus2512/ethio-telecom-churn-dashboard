@@ -202,34 +202,31 @@ def inject_custom_css() -> None:
         f"""
         <style>
         .stApp {{
-            background-color: var(--background-color);
-            color: var(--text-color);
-            --primary-color: {ETHIO_GREEN};
+            max-width: 100%;
+            overflow-x: clip;
         }}
         [data-testid="stSidebar"] {{
-            background-color: var(--secondary-background-color);
-            border-right: 1px solid var(--border-color, #e0e0e0);
+            border-right: 1px solid rgba(128, 128, 128, 0.25);
         }}
         [data-testid="stSidebar"] [data-testid="stMarkdownContainer"],
         [data-testid="stSidebar"] label,
         [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {{
-            color: var(--text-color);
+            color: inherit;
         }}
         [data-testid="stSidebar"] h1,
         [data-testid="stSidebar"] h2,
         [data-testid="stSidebar"] h3 {{
-            color: var(--text-color);
+            color: inherit;
             font-weight: 600;
         }}
         h1, h2, h3 {{
-            color: var(--text-color);
+            color: inherit;
             font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }}
         [data-testid="stMetric"] {{
             box-sizing: border-box;
             min-width: 0;
-            background-color: var(--secondary-background-color);
-            border: 1px solid var(--border-color, #e0e0e0);
+            border: 1px solid rgba(128, 128, 128, 0.3);
             border-left: 5px solid {ETHIO_GREEN};
             border-radius: 0.75rem;
             padding: 12px 16px;
@@ -238,7 +235,7 @@ def inject_custom_css() -> None:
         [data-testid="stMetric"] label,
         [data-testid="stMetricLabel"],
         [data-testid="stMetricValue"] {{
-            color: var(--text-color);
+            color: inherit;
         }}
         .ethio-banner {{
             background: linear-gradient(110deg, #00652f 0%, {ETHIO_GREEN} 78%);
@@ -260,10 +257,10 @@ def inject_custom_css() -> None:
             font-size: 0.98rem;
         }}
         [data-testid="stTabs"] [role="tab"] {{
-            color: var(--text-color);
+            color: inherit;
         }}
         [data-testid="stTabs"] [role="tab"][aria-selected="true"] {{
-            color: var(--text-color);
+            color: inherit;
             border-bottom-color: {ETHIO_GREEN};
         }}
         [data-testid="stSidebar"] [data-tag] {{
@@ -273,8 +270,7 @@ def inject_custom_css() -> None:
         [data-testid="stSidebar"] [data-baseweb="select"],
         [data-testid="stSidebar"] [data-baseweb="input"] {{
             max-width: 100%;
-            color: var(--text-color);
-            background-color: var(--background-color);
+            color: inherit;
         }}
         [data-testid="stSidebar"] [data-baseweb="select"]:focus-within,
         [data-testid="stSidebar"] [data-baseweb="input"]:focus-within {{
@@ -283,17 +279,15 @@ def inject_custom_css() -> None:
         [data-testid="stSidebar"] [data-testid="stFileUploader"] section {{
             box-sizing: border-box;
             max-width: 100%;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            border: 1px dashed var(--border-color, #e0e0e0);
+            color: inherit;
+            border: 1px dashed rgba(128, 128, 128, 0.4);
             border-radius: 0.75rem;
         }}
         [data-testid="stSidebar"] [data-testid="stFileUploader"] button,
         [data-testid="stSidebar"] button[kind="secondary"] {{
             max-width: 100%;
-            color: var(--text-color);
-            background-color: var(--secondary-background-color);
-            border-color: var(--border-color, #e0e0e0);
+            color: inherit;
+            border-color: rgba(128, 128, 128, 0.4);
             white-space: normal;
         }}
         [data-testid="stSidebar"] button[kind="primary"],
@@ -310,35 +304,96 @@ def inject_custom_css() -> None:
         [data-testid="stDataFrame"] {{
             box-sizing: border-box;
             max-width: 100%;
-            color: var(--text-color);
-            background-color: var(--background-color);
-            border: 1px solid var(--border-color, #e0e0e0);
+            color: inherit;
+            border: 1px solid rgba(128, 128, 128, 0.3);
             border-radius: 0.75rem;
             overflow: hidden;
         }}
+        @media (max-width: 640px) {{
+            [data-testid="stMainBlockContainer"] {{
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }}
+            .ethio-banner {{
+                padding: 1rem;
+                margin-bottom: 0.75rem;
+                overflow-wrap: anywhere;
+            }}
+            .ethio-banner h1 {{
+                font-size: clamp(1.25rem, 6vw, 1.6rem);
+                line-height: 1.25;
+            }}
+            .ethio-banner p {{
+                font-size: 0.9rem;
+                line-height: 1.45;
+            }}
+            [data-testid="stMetric"] {{
+                width: 100%;
+                min-width: 0;
+                padding: 0.75rem 1rem;
+            }}
+            [data-testid="stMetricLabel"],
+            [data-testid="stMetricValue"] {{
+                min-width: 0;
+                overflow-wrap: anywhere;
+            }}
+            [data-testid="stSidebar"],
+            [data-testid="stSidebar"] > div,
+            [data-testid="stSidebar"] [data-testid="stVerticalBlock"] {{
+                min-width: 0;
+                max-width: 100%;
+            }}
+            [data-testid="stSidebar"] [data-testid="stFileUploader"],
+            [data-testid="stSidebar"] [data-testid="stFileUploader"] section,
+            [data-testid="stSidebar"] [data-testid="stFileUploader"] small {{
+                box-sizing: border-box;
+                max-width: 100%;
+                overflow-wrap: anywhere;
+            }}
+            [data-testid="stSidebar"] [data-tag] {{
+                max-width: 100%;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }}
+            [data-testid="stSidebar"] button,
+            [data-testid="stDownloadButton"] button,
+            [data-testid="stFormSubmitButton"] button {{
+                max-width: 100%;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }}
+            [data-testid="stTabs"] [role="tab"] {{
+                min-width: 0;
+                padding-left: 0.45rem;
+                padding-right: 0.45rem;
+                white-space: normal;
+                text-align: center;
+            }}
+            [data-testid="stDataFrame"] {{
+                width: 100%;
+                max-width: 100%;
+            }}
+        }}
         .risk-high {{
-            background-color: color-mix(in srgb, {ETHIO_ORANGE} 16%, var(--background-color));
-            border: 1px solid var(--border-color, #e0e0e0);
+            border: 1px solid rgba(128, 128, 128, 0.3);
             border-left: 5px solid {ETHIO_ORANGE};
             padding: 1rem 1.2rem;
             border-radius: 0.75rem;
-            color: var(--text-color);
+            color: inherit;
         }}
         .risk-medium {{
-            background-color: color-mix(in srgb, {ETHIO_ORANGE} 10%, var(--background-color));
-            border: 1px solid var(--border-color, #e0e0e0);
+            border: 1px solid rgba(128, 128, 128, 0.3);
             border-left: 5px solid {ETHIO_ORANGE};
             padding: 1rem 1.2rem;
             border-radius: 0.75rem;
-            color: var(--text-color);
+            color: inherit;
         }}
         .risk-low {{
-            background-color: color-mix(in srgb, {ETHIO_GREEN} 12%, var(--background-color));
-            border: 1px solid var(--border-color, #e0e0e0);
+            border: 1px solid rgba(128, 128, 128, 0.3);
             border-left: 5px solid {ETHIO_GREEN};
             padding: 1rem 1.2rem;
             border-radius: 0.75rem;
-            color: var(--text-color);
+            color: inherit;
         }}
         </style>
         """,
@@ -394,7 +449,7 @@ def render_kpis(df: pd.DataFrame) -> None:
     churn_rate = (churned / total * 100) if total else 0.0
     avg_bill = float(df["Monthly_Bill_ETB"].mean()) if total else 0.0
 
-    c1, c2, c3, c4 = st.columns(4)
+    c1, c2, c3, c4 = st.columns(4, gap="small", wrap=True)
     c1.metric("Total Customers", f"{total:,}")
     c2.metric("Churned Customers", f"{churned:,}")
     c3.metric("Churn Rate", f"{churn_rate:.1f}%")
@@ -544,7 +599,7 @@ def render_risk_predictor(df: pd.DataFrame) -> None:
     model, feature_cols = train_churn_model(df)
 
     with st.form("risk_form"):
-        col_a, col_b, col_c = st.columns(3)
+        col_a, col_b, col_c = st.columns(3, gap="medium", wrap=True)
 
         with col_a:
             tenure = st.number_input("Tenure (months)", min_value=1, max_value=120, value=8, step=1)
@@ -611,7 +666,7 @@ def render_risk_predictor(df: pd.DataFrame) -> None:
         level, css = "LOW RISK", "risk-low"
         advice = "Customer appears stable. Focus on upsell (5G/Fiber) and long-term loyalty rewards."
 
-    m1, m2, m3 = st.columns(3)
+    m1, m2, m3 = st.columns(3, gap="small", wrap=True)
     m1.metric("Blended Risk Score", f"{blended * 100:.1f}%")
     m2.metric("ML Model Probability", f"{ml_prob * 100:.1f}%")
     m3.metric("Rule-Based Score", f"{rule_prob * 100:.1f}%")
@@ -700,7 +755,7 @@ def main() -> None:
         else:
             render_kpis(filtered)
             st.markdown("")
-            left, right = st.columns(2)
+            left, right = st.columns(2, gap="medium", wrap=True)
             with left:
                 st.plotly_chart(
                     chart_churn_by_region(filtered),
@@ -724,7 +779,7 @@ def main() -> None:
 
             # Quick SQL-flavored insight strip
             st.markdown("#### Snapshot Insights")
-            i1, i2, i3 = st.columns(3)
+            i1, i2, i3 = st.columns(3, gap="small", wrap=True)
             top_region = (
                 filtered.groupby("Region")["Churn"]
                 .apply(lambda s: (s == "Yes").mean())
