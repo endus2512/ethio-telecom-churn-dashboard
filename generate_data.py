@@ -37,7 +37,18 @@ REGIONS = [
 ]
 
 # Weighted toward denser / more urban markets
-REGION_WEIGHTS = [0.28, 0.18, 0.14, 0.10, 0.08, 0.06, 0.07, 0.04, 0.03, 0.02]
+REGION_WEIGHTS = {
+    "Addis Ababa": 0.28,
+    "Oromia": 0.18,
+    "Amhara": 0.14,
+    "SNNPR": 0.10,
+    "Sidama": 0.08,
+    "Somali": 0.06,
+    "Tigray": 0.07,
+    "Afar": 0.04,
+    "Dire Dawa": 0.03,
+    "Harari": 0.02,
+}
 
 CONTRACT_TYPES = ["Prepaid", "Postpaid"]
 INTERNET_SERVICES = ["3G", "4G", "5G", "Fiber"]
@@ -82,7 +93,11 @@ def generate_customers(n: int = N_CUSTOMERS, seed: int = SEED) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
 
     customer_ids = [f"ET-{1001 + i}" for i in range(n)]
-    regions = rng.choice(REGIONS, size=n, p=REGION_WEIGHTS)
+    regions = rng.choice(
+        REGIONS,
+        size=n,
+        p=[REGION_WEIGHTS[region] for region in REGIONS],
+    )
     contract_types = rng.choice(CONTRACT_TYPES, size=n, p=[0.72, 0.28])
     internet_services = rng.choice(INTERNET_SERVICES, size=n, p=INTERNET_WEIGHTS)
     telebirr_users = rng.choice(["Yes", "No"], size=n, p=[0.62, 0.38])

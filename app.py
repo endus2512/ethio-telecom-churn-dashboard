@@ -28,13 +28,10 @@ from generate_data import CSV_PATH, DB_PATH, generate_customers, load_from_sqlit
 # ---------------------------------------------------------------------------
 # Brand / theme constants (Ethio Telecom-inspired palette)
 # ---------------------------------------------------------------------------
-ETHIO_GREEN = "#00843D"
-ETHIO_YELLOW = "#FCD116"
-ETHIO_DARK_BLUE = "#0A2540"
-ETHIO_LIGHT_BG = "#F7FAF8"
-ETHIO_ACCENT = "#006B32"
+ETHIO_GREEN = "#00813D"
+ETHIO_ORANGE = "#FF6600"
 
-PLOTLY_COLORWAY = [ETHIO_GREEN, ETHIO_YELLOW, ETHIO_DARK_BLUE, "#2E8B57", "#C9A227", "#1B4F72"]
+PLOTLY_COLORWAY = [ETHIO_GREEN, ETHIO_ORANGE, "#36A2AE", "#8C5AA7", "#D9A400", "#4169E1"]
 
 PAGE_CONFIG = {
     "page_title": "Ethio Telecom Churn Analytics",
@@ -205,72 +202,143 @@ def inject_custom_css() -> None:
         f"""
         <style>
         .stApp {{
-            background: linear-gradient(180deg, {ETHIO_LIGHT_BG} 0%, #FFFFFF 45%, #F0F7F3 100%);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            --primary-color: {ETHIO_GREEN};
         }}
         [data-testid="stSidebar"] {{
-            background: linear-gradient(180deg, {ETHIO_DARK_BLUE} 0%, #0F3A5F 100%);
+            background-color: var(--secondary-background-color);
+            border-right: 1px solid var(--border-color, #e0e0e0);
         }}
-        [data-testid="stSidebar"] * {{
-            color: #F5F7FA !important;
+        [data-testid="stSidebar"] [data-testid="stMarkdownContainer"],
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {{
+            color: var(--text-color);
         }}
-        [data-testid="stSidebar"] .stSelectbox label,
-        [data-testid="stSidebar"] .stMultiSelect label {{
-            color: {ETHIO_YELLOW} !important;
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3 {{
+            color: var(--text-color);
             font-weight: 600;
         }}
         h1, h2, h3 {{
-            color: {ETHIO_DARK_BLUE} !important;
+            color: var(--text-color);
             font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
         }}
-        div[data-testid="stMetric"] {{
-            background: white;
-            border: 1px solid #D8E8DE;
+        [data-testid="stMetric"] {{
+            box-sizing: border-box;
+            min-width: 0;
+            background-color: var(--secondary-background-color);
+            border: 1px solid var(--border-color, #e0e0e0);
             border-left: 5px solid {ETHIO_GREEN};
-            border-radius: 10px;
+            border-radius: 0.75rem;
             padding: 12px 16px;
-            box-shadow: 0 2px 8px rgba(10, 37, 64, 0.06);
+            box-shadow: 0 2px 8px rgba(10, 37, 64, 0.08);
         }}
-        div[data-testid="stMetric"] label {{
-            color: {ETHIO_DARK_BLUE} !important;
+        [data-testid="stMetric"] label,
+        [data-testid="stMetricLabel"],
+        [data-testid="stMetricValue"] {{
+            color: var(--text-color);
         }}
         .ethio-banner {{
-            background: linear-gradient(90deg, {ETHIO_DARK_BLUE} 0%, {ETHIO_GREEN} 70%, {ETHIO_YELLOW} 100%);
-            color: white;
+            background: linear-gradient(110deg, #00652f 0%, {ETHIO_GREEN} 78%);
+            border-bottom: 4px solid {ETHIO_ORANGE};
+            color: #ffffff;
             padding: 1.4rem 1.6rem;
-            border-radius: 14px;
+            border-radius: 0.9rem;
             margin-bottom: 1.2rem;
-            box-shadow: 0 4px 16px rgba(10, 37, 64, 0.18);
+            box-shadow: 0 4px 16px rgba(10, 37, 64, 0.12);
         }}
         .ethio-banner h1 {{
-            color: white !important;
+            color: #ffffff;
             margin: 0;
             font-size: 1.75rem;
         }}
         .ethio-banner p {{
             margin: 0.35rem 0 0 0;
-            opacity: 0.92;
+            color: #ffffff;
             font-size: 0.98rem;
         }}
+        [data-testid="stTabs"] [role="tab"] {{
+            color: var(--text-color);
+        }}
+        [data-testid="stTabs"] [role="tab"][aria-selected="true"] {{
+            color: var(--text-color);
+            border-bottom-color: {ETHIO_GREEN};
+        }}
+        [data-testid="stSidebar"] [data-tag] {{
+            color: #ffffff;
+            background-color: {ETHIO_GREEN};
+        }}
+        [data-testid="stSidebar"] [data-baseweb="select"],
+        [data-testid="stSidebar"] [data-baseweb="input"] {{
+            max-width: 100%;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }}
+        [data-testid="stSidebar"] [data-baseweb="select"]:focus-within,
+        [data-testid="stSidebar"] [data-baseweb="input"]:focus-within {{
+            border-color: {ETHIO_GREEN};
+        }}
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] section {{
+            box-sizing: border-box;
+            max-width: 100%;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            border: 1px dashed var(--border-color, #e0e0e0);
+            border-radius: 0.75rem;
+        }}
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] button,
+        [data-testid="stSidebar"] button[kind="secondary"] {{
+            max-width: 100%;
+            color: var(--text-color);
+            background-color: var(--secondary-background-color);
+            border-color: var(--border-color, #e0e0e0);
+            white-space: normal;
+        }}
+        [data-testid="stSidebar"] button[kind="primary"],
+        [data-testid="stFormSubmitButton"] button {{
+            color: #ffffff;
+            background-color: {ETHIO_GREEN};
+            border-color: {ETHIO_GREEN};
+        }}
+        [data-testid="stDownloadButton"] button {{
+            color: #1f2328;
+            background-color: {ETHIO_ORANGE};
+            border-color: {ETHIO_ORANGE};
+        }}
+        [data-testid="stDataFrame"] {{
+            box-sizing: border-box;
+            max-width: 100%;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color, #e0e0e0);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }}
         .risk-high {{
-            background: #FEE2E2;
-            border-left: 5px solid #DC2626;
+            background-color: color-mix(in srgb, {ETHIO_ORANGE} 16%, var(--background-color));
+            border: 1px solid var(--border-color, #e0e0e0);
+            border-left: 5px solid {ETHIO_ORANGE};
             padding: 1rem 1.2rem;
-            border-radius: 8px;
-            color: #7F1D1D;
+            border-radius: 0.75rem;
+            color: var(--text-color);
         }}
         .risk-medium {{
-            background: #FEF3C7;
-            border-left: 5px solid #D97706;
+            background-color: color-mix(in srgb, {ETHIO_ORANGE} 10%, var(--background-color));
+            border: 1px solid var(--border-color, #e0e0e0);
+            border-left: 5px solid {ETHIO_ORANGE};
             padding: 1rem 1.2rem;
-            border-radius: 8px;
-            color: #78350F;
+            border-radius: 0.75rem;
+            color: var(--text-color);
         }}
         .risk-low {{
-            background: #D1FAE5;
+            background-color: color-mix(in srgb, {ETHIO_GREEN} 12%, var(--background-color));
+            border: 1px solid var(--border-color, #e0e0e0);
             border-left: 5px solid {ETHIO_GREEN};
             padding: 1rem 1.2rem;
-            border-radius: 8px;
-            color: #064E3B;
+            border-radius: 0.75rem;
+            color: var(--text-color);
         }}
         </style>
         """,
@@ -354,15 +422,14 @@ def chart_churn_by_region(df: pd.DataFrame) -> go.Figure:
         y="Churn_Rate_%",
         text="Churn_Rate_%",
         color="Churn_Rate_%",
-        color_continuous_scale=[[0, ETHIO_YELLOW], [0.5, ETHIO_GREEN], [1, ETHIO_DARK_BLUE]],
+        color_continuous_scale=[[0, ETHIO_GREEN], [1, ETHIO_ORANGE]],
         title="Churn Rate by Region (%)",
         hover_data={"Customers": True, "Churned": True, "Churn_Rate_%": True},
     )
     fig.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
     fig.update_layout(
-        plot_bgcolor="white",
+        plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(color=ETHIO_DARK_BLUE),
         coloraxis_showscale=False,
         margin=dict(t=60, b=40),
         yaxis_title="Churn Rate (%)",
@@ -382,7 +449,7 @@ def chart_internet_among_churned(df: pd.DataFrame) -> go.Figure:
                 dict(
                     text="No churned customers in current filter",
                     showarrow=False,
-                    font=dict(size=14, color=ETHIO_DARK_BLUE),
+                    font=dict(size=14),
                 )
             ],
         )
@@ -402,7 +469,6 @@ def chart_internet_among_churned(df: pd.DataFrame) -> go.Figure:
     fig.update_traces(textposition="inside", textinfo="percent+label")
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(color=ETHIO_DARK_BLUE),
         margin=dict(t=60, b=20),
         legend_title_text="Service",
     )
@@ -421,13 +487,12 @@ def chart_bill_vs_churn(df: pd.DataFrame) -> go.Figure:
         color="Churn",
         points="outliers",
         title="Monthly Bill (ETB) vs Churn Status",
-        color_discrete_map={"Yes": "#DC2626", "No": ETHIO_GREEN},
+        color_discrete_map={"Yes": ETHIO_ORANGE, "No": ETHIO_GREEN},
         labels={"Monthly_Bill_ETB": "Monthly Bill (ETB)", "Churn": "Churned?"},
     )
     fig.update_layout(
-        plot_bgcolor="white",
+        plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
-        font=dict(color=ETHIO_DARK_BLUE),
         showlegend=False,
         margin=dict(t=60, b=40),
     )
@@ -452,8 +517,9 @@ def render_data_table(df: pd.DataFrame) -> None:
     ]
     st.dataframe(
         df[display_cols].sort_values("Customer_ID"),
-        use_container_width=True,
+        width="stretch",
         height=360,
+        alt="Filtered Ethio Telecom customer records",
     )
 
     csv_buffer = io.StringIO()
@@ -463,7 +529,7 @@ def render_data_table(df: pd.DataFrame) -> None:
         data=csv_buffer.getvalue(),
         file_name="ethio_telecom_filtered_customers.csv",
         mime="text/csv",
-        use_container_width=False,
+        width="content",
     )
 
 
@@ -497,7 +563,7 @@ def render_risk_predictor(df: pd.DataFrame) -> None:
         with col_c:
             region = st.selectbox("Region", sorted(df["Region"].unique()))
             st.markdown("")  # spacing
-            submitted = st.form_submit_button("Predict Churn Risk", use_container_width=True)
+            submitted = st.form_submit_button("Predict Churn Risk", width="stretch")
 
     if not submitted:
         st.info("Fill in the fields above and click **Predict Churn Risk**.")
@@ -561,17 +627,17 @@ def render_risk_predictor(df: pd.DataFrame) -> None:
             mode="gauge+number",
             value=blended * 100,
             number={"suffix": "%"},
-            title={"text": "Churn Risk", "font": {"color": ETHIO_DARK_BLUE}},
+            title={"text": "Churn Risk"},
             gauge={
                 "axis": {"range": [0, 100]},
-                "bar": {"color": ETHIO_DARK_BLUE},
+                "bar": {"color": ETHIO_GREEN},
                 "steps": [
-                    {"range": [0, 35], "color": "#A7F3D0"},
-                    {"range": [35, 55], "color": "#FDE68A"},
-                    {"range": [55, 100], "color": "#FECACA"},
+                    {"range": [0, 35], "color": "#B7E3C7"},
+                    {"range": [35, 55], "color": "#FFD6B8"},
+                    {"range": [55, 100], "color": "#FFB27A"},
                 ],
                 "threshold": {
-                    "line": {"color": "#DC2626", "width": 3},
+                    "line": {"color": ETHIO_ORANGE, "width": 3},
                     "thickness": 0.75,
                     "value": 55,
                 },
@@ -579,7 +645,12 @@ def render_risk_predictor(df: pd.DataFrame) -> None:
         )
     )
     gauge.update_layout(height=280, margin=dict(t=40, b=10, l=30, r=30), paper_bgcolor="rgba(0,0,0,0)")
-    st.plotly_chart(gauge, use_container_width=True)
+    st.plotly_chart(
+        gauge,
+        width="stretch",
+        theme="streamlit",
+        alt="Customer churn risk score",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -591,6 +662,17 @@ def main() -> None:
     render_header()
 
     df = load_data()
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("Upload Custom Data")
+    uploaded_file = st.sidebar.file_uploader(" Upload Ethio Telecom CSV ", type=["csv"])
+
+    if uploaded_file is not None:
+        try:
+            df = clean_dataframe(pd.read_csv(uploaded_file))
+        except (pd.errors.EmptyDataError, pd.errors.ParserError, UnicodeDecodeError, ValueError) as exc:
+            st.sidebar.error(f"Could not load the uploaded CSV: {exc}")
+            st.stop()
+
     filtered = apply_filters(df)
 
     st.sidebar.markdown("---")
@@ -620,10 +702,25 @@ def main() -> None:
             st.markdown("")
             left, right = st.columns(2)
             with left:
-                st.plotly_chart(chart_churn_by_region(filtered), use_container_width=True)
+                st.plotly_chart(
+                    chart_churn_by_region(filtered),
+                    width="stretch",
+                    theme="streamlit",
+                    alt="Churn rate by region",
+                )
             with right:
-                st.plotly_chart(chart_internet_among_churned(filtered), use_container_width=True)
-            st.plotly_chart(chart_bill_vs_churn(filtered), use_container_width=True)
+                st.plotly_chart(
+                    chart_internet_among_churned(filtered),
+                    width="stretch",
+                    theme="streamlit",
+                    alt="Internet service mix among churned customers",
+                )
+            st.plotly_chart(
+                chart_bill_vs_churn(filtered),
+                width="stretch",
+                theme="streamlit",
+                alt="Monthly bill distribution by churn status",
+            )
 
             # Quick SQL-flavored insight strip
             st.markdown("#### Snapshot Insights")

@@ -41,7 +41,7 @@ ethio/
 
 | Layer        | Tools                                      |
 |-------------|---------------------------------------------|
-| Language    | Python 3.9+                                 |
+| Language    | Python 3.11+                                |
 | UI          | Streamlit                                   |
 | Data        | Pandas, NumPy, SQLite                       |
 | Charts      | Plotly Express / Graph Objects              |
