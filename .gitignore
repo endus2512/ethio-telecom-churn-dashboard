@@ -7,3 +7,10 @@ __pycache__/
 .streamlit/secrets.toml
 .DS_Store
 *.log
+.env
+ethio_telecom_son/known_hosts
+ethio_telecom_son/.env.local
+ethio_telecom_son/son-local.db
+ethio_telecom_son/son-local.db-journal
+ethio_telecom_son/son-local.db-shm
+ethio_telecom_son/son-local.db-wal

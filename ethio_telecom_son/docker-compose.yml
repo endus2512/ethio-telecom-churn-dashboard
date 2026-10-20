@@ -1,0 +1,78 @@
+services:
+  postgres:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_DB: son
+      POSTGRES_USER: son
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - son-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U son -d son"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+    networks: [son-internal]
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["sh", "-c", "python -m src.migrate && exec uvicorn src.api:app --host 0.0.0.0 --port 8000 --workers 1"]
+    environment:
+      SON_DATABASE_URL: postgresql+psycopg://son:${POSTGRES_PASSWORD}@postgres:5432/son
+      SON_JWT_SECRET: ${SON_JWT_SECRET:?Set SON_JWT_SECRET in .env}
+      SON_JWT_ISSUER: ethio-telecom-son
+      SON_CORS_ORIGINS: http://localhost:8501
+      SON_INGESTION_API_TOKEN: ${SON_INGESTION_API_TOKEN:-}
+      SON_NETCONF_ENABLED: ${SON_NETCONF_ENABLED:-false}
+      SON_NETCONF_USERNAME: ${SON_NETCONF_USERNAME:-}
+      SON_NETCONF_PASSWORD: ${SON_NETCONF_PASSWORD:-}
+      SON_NETCONF_KNOWN_HOSTS: ${SON_NETCONF_KNOWN_HOSTS:-}
+      SON_NETCONF_ACTION_TEMPLATES_JSON: ${SON_NETCONF_ACTION_TEMPLATES_JSON:-}
+      SON_ALLOWED_DEVICE_CIDRS: ${SON_ALLOWED_DEVICE_CIDRS:-}
+    volumes:
+      - ${NETCONF_KNOWN_HOSTS_FILE:-./known_hosts.example}:/run/son/known_hosts:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health/ready', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 20s
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [son-internal, son-edge]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port=8501", "--server.headless=true"]
+    environment:
+      SON_API_URL: http://backend:8000
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8501/_stcore/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 20s
+    restart: unless-stopped
+    networks: [son-edge]
+
+volumes:
+  son-postgres-data:
+
+networks:
+  son-internal:
+    internal: true
+  son-edge:

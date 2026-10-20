@@ -135,3 +135,14 @@ It reports:
 ## License
 
 MIT — feel free to adapt for your portfolio. Ethio Telecom names and colors are used only for thematic demonstration.
+
+## Self-Optimizing Network (SON) Operations Platform
+
+A separate network-operations analytics application is available in
+[ethio_telecom_son](./ethio_telecom_son/README.md). It includes a PostgreSQL
+database, FastAPI backend, RBAC-protected Streamlit operations UI, PM/FM
+ingestion, ML analytics, an audited approval workflow, and a guarded,
+vendor-configured NETCONF/YANG driver. Live network actuation is disabled by
+default and requires Ethio Telecom vendor YANG models, NMS mappings, credentials,
+and operational validation. See its README for Docker deployment and integration
+requirements.
